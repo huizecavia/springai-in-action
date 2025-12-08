@@ -2,8 +2,11 @@ package io.matthijs.really.springioinaction.boardgamebuddy;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.client.RestClientCustomizer;
+import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+import org.zalando.logbook.spring.LogbookClientHttpRequestInterceptor;
 
 @Service
 public class SpringAiBoardGameService implements BoardGameService {
@@ -16,8 +19,8 @@ public class SpringAiBoardGameService implements BoardGameService {
         this.gameRulesService = gameRulesService;
     }
 
-    @Value("classpath:/promptTemplates/questionPromptTemplate.st")
-    Resource questionPromptTemplate;
+    @Value("classpath:/promptTemplates/systemPromptTemplate.st")
+    Resource promptTemplate;
 
     @Override
     public Answer askQuestion(Question question) {
@@ -27,7 +30,7 @@ public class SpringAiBoardGameService implements BoardGameService {
 
         String answerText = chatClient.prompt()
                 .user(userSpec -> userSpec
-                        .text(questionPromptTemplate)
+                        .text(promptTemplate)
                         .param("game", question.gameTitle())
                         .param("question", question.question())
                         .param("rules", gameRulesService.getRulesFor(question.gameTitle())))
