@@ -28,16 +28,15 @@ public class SpringAiBoardGameService implements BoardGameService {
                 "Answer this question about " + question.gameTitle() +
                         ": " + question.question();
 
-        String answerText = chatClient.prompt()
+        return chatClient.prompt()
                 .user(userSpec -> userSpec
                         .text(promptTemplate)
                         .param("game", question.gameTitle())
                         .param("question", question.question())
                         .param("rules", gameRulesService.getRulesFor(question.gameTitle())))
                 .call()
-                .content();
+                .entity(Answer.class);
 
-        return new Answer(question.gameTitle(), answerText);
     }
 
 }
