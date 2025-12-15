@@ -11,25 +11,25 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-public class TopSongsController {
+public class TopCitiesController {
 
-    @Value("classpath:/top-songs-prompt.st")
+    @Value("classpath:/top-cities-prompt.st")
     Resource topSongPromptTemplate;
 
     private final ChatClient chatClient;
 
-    public TopSongsController(ChatClient.Builder chatClientBuilder) {
+    public TopCitiesController(ChatClient.Builder chatClientBuilder) {
         this.chatClient = chatClientBuilder.build();
     }
 
-    @GetMapping(path = "/topSongs", produces = "application/json")
-    public List<String> topSongs(@RequestParam("year") String year) {
+    @GetMapping(path = "/topCities", produces = "application/json")
+    public String topCities(@RequestParam("country") String country) {
         return chatClient.prompt()
                 .user(userSpec -> userSpec
                         .text(topSongPromptTemplate)
-                        .param("year", year))
+                        .param("country", country))
                 .call()
-                .entity(new ParameterizedTypeReference<List<String>>() {});
+                .content();
     }
 
 }
