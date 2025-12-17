@@ -2,11 +2,8 @@ package io.matthijs.really.springioinaction.boardgamebuddy;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.client.RestClientCustomizer;
-import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
-import org.zalando.logbook.spring.LogbookClientHttpRequestInterceptor;
 
 @Service
 public class SpringAiBoardGameService implements BoardGameService {
